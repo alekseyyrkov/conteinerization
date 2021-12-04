@@ -1,0 +1,7 @@
+FROM docker pull python:3.9.9-buster
+MAINTAINER aleksey
+COPY . /opt/app
+WORKDIR /opt/app
+RUN pip install -r requirements.txt
+EXPOSE 8080
+ENTRYPOINT [ "python", "app.py" ]

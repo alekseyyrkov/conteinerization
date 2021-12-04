@@ -1,0 +1,15 @@
+services:
+  python:
+    image: python-test:1.0
+    restart: always
+    volumes:
+      - ./python_volume:/opt/app
+    ports:
+      - 8080:8080
+  golang:
+    image: golang-test:1.0
+    restart: always
+    volumes:
+       - ./golang_volume:/opt/app
+    ports:
+       - 8181:8080

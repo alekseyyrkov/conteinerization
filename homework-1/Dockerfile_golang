@@ -1,0 +1,7 @@
+FROM golang:1.16.10-buster
+MAINTAINER aleksey
+COPY . /opt/app
+WORKDIR /opt/app
+RUN go build -o main .
+EXPOSE 8080
+ENTRYPOINT ["go", "run", "/opt/app/main.go"]
