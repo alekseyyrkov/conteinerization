@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redmine-deployment
+spec:
+  selector:
+    matchLabels:
+      app: redmine
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: redmine
+    spec:
+      containers:
+      - name: redmine
+        image: redmine:4.1.1
+        env:
+          - name: REDMINE_DB_POSTGRES
+            value: database
+          - name: REDMINE_DB_DATABASE
+            value: testdatabase
+          - name: REDMINE_DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                  name: postgres-secret
+                  key: username
+          - name: REDMINE_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: postgres-secret
+                  key: password
+          - name: REDMINE_SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                  name: postgres-secret
+                  key: secretkey  
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "700m"
+          requests:
+            memory: "150Mi" 
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: redmine-svc
+spec:
+  selector:
+    app: redmine
+  ports:
+  - port: 3000
+    targetPort: 3000

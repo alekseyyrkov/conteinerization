@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-host
+  labels:
+    name: ingress-host
+spec:
+  rules:
+  - host: www.redmine.org
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: redmine-svc
+            port: 
+              number: 3000
+  - host: www.adv.kz
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: adv-web-svc
+            port: 
+              number: 80
+  
+  ingressClassName: nginx
